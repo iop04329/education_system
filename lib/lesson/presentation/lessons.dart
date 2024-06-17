@@ -1,7 +1,9 @@
 import 'package:education_system/account/domain/account.dart';
 import 'package:education_system/appbar/customAppBar.dart';
 import 'package:education_system/customWidget/customWidget.dart';
+import 'package:education_system/lesson/controller/lessonController.dart';
 import 'package:education_system/lesson/domain/lesson.dart';
+import 'package:education_system/lesson/domain/teacherLesson.dart';
 import 'package:education_system/utils/pub.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +19,19 @@ class AllLessonsPage extends StatefulHookConsumerWidget {
 }
 
 class _lessonPageState extends ConsumerState<AllLessonsPage> {
+  bool isInitializing = true;
+  List<teacherLesson> items = [];
+  @override
+  void initState() {
+    _getData();
+  }
+
+  _getData() async {
+    items = await ref.read(lessonCtrProvider).fetchTeacherLessons();
+    isInitializing = false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,16 +39,17 @@ class _lessonPageState extends ConsumerState<AllLessonsPage> {
       body: Container(
         height: double.infinity,
         color: Colors.white,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: List.generate(5, (index) => teacherInfoCard()),
-            // ListView.builder(
-            //   itemCount: 5,
-            //   itemBuilder: (_, ind) => lessonCard(),
-            // ),
-          ),
-        ),
+        child: isInitializing
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: List.generate(
+                    items.length,
+                    (index) => teacherInfoCard(data: items[index]),
+                  ),
+                ),
+              ),
       ),
     );
   }

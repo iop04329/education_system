@@ -11,13 +11,12 @@ final studentLessonRepoProvider = Provider<studentLessonRepo>((ref) {
 
 class studentLessonRepo extends baseRepository<studentLesson> {
   late Database db;
-  static String dbName = 'studentLesson';
-  static String get studentLessonPath => 'dbstudentLesson.db';
+  static String tableName = 'studentLesson';
   static String get studentLessonCreateSql => """
-      create table $dbName(
+      create table $tableName(
         fid integer primary key autoincrement not null,
         studentId integer not null default 0,
-        lessonId integer not null default 0,
+        lessonId integer not null default 0
       )
       """;
   studentLessonRepo() {
@@ -25,31 +24,31 @@ class studentLessonRepo extends baseRepository<studentLesson> {
   }
 
   initRepo() async {
-    db = await sqlTool.db(studentLessonCreateSql, studentLessonPath);
+    db = await sqlTool.open(sqlTool.dbName);
   }
 
   @override
   Future<bool> delete(int id) async {
-    int res = await db.delete(dbName, where: 'fid = ?', whereArgs: [id]);
+    int res = await db.delete(tableName, where: 'fid = ?', whereArgs: [id]);
     return res == 0 ? false : true;
   }
 
   @override
   Future<bool> edit(studentLesson data) async {
-    int res = await db.update(dbName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
+    int res = await db.update(tableName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
     return res == 0 ? false : true;
   }
 
   @override
   Future<studentLesson?> fetch(int fid) async {
-    final jsons = await db.query(dbName, where: 'fid = ?', whereArgs: [fid]);
+    final jsons = await db.query(tableName, where: 'fid = ?', whereArgs: [fid]);
     final datas = jsons.map((e) => studentLesson.fromJson(e)).toList();
     return datas.isEmpty ? null : datas.first;
   }
 
   @override
   Future<List<studentLesson>> fetchList() async {
-    final jsons = await db.query(dbName, orderBy: 'fid');
+    final jsons = await db.query(tableName, orderBy: 'fid');
     final datas = jsons.map((e) => studentLesson.fromJson(e)).toList();
     return datas.isEmpty ? [] : datas;
   }
@@ -57,7 +56,7 @@ class studentLessonRepo extends baseRepository<studentLesson> {
   @override
   Future<bool> insert(studentLesson data) async {
     int id = await db.insert(
-      dbName,
+      tableName,
       data.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );

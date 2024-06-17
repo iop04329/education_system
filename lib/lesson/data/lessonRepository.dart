@@ -12,10 +12,10 @@ final lessonRepoProvider = Provider<lessonRepo>((ref) {
 
 class lessonRepo extends baseRepository<lessonData> {
   late Database db;
-  static String dbName = 'lessons';
-  static String get lessonPath => 'dblesson.db';
+  static String tableName = 'lessons';
+
   static String get lessonCreateSql => """
-      create table $dbName(
+      create table $tableName(
         fid integer primary key autoincrement not null,
         teacherId integer not null default 0,
         lessonName Text not null default '',
@@ -30,32 +30,32 @@ class lessonRepo extends baseRepository<lessonData> {
   }
 
   initRepo() async {
-    db = await sqlTool.db(lessonCreateSql, lessonPath);
+    db = await sqlTool.open(sqlTool.dbName);
   }
 
   @override
   Future<bool> delete(int id) async {
-    int res = await db.delete(dbName, where: 'fid = ?', whereArgs: [id]);
+    int res = await db.delete(tableName, where: 'fid = ?', whereArgs: [id]);
     return res == 0 ? false : true;
   }
 
   @override
   Future<bool> edit(lessonData data) async {
-    int res = await db.update(dbName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
+    int res = await db.update(tableName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
 
     return res == 0 ? false : true;
   }
 
   @override
   Future<lessonData?> fetch(int fid) async {
-    final jsons = await db.query(dbName, where: 'fid = ?', whereArgs: [fid]);
+    final jsons = await db.query(tableName, where: 'fid = ?', whereArgs: [fid]);
     final datas = jsons.map((e) => lessonData.fromJson(e)).toList();
     return datas.isEmpty ? null : datas.first;
   }
 
   @override
   Future<List<lessonData>> fetchList() async {
-    final jsons = await db.query(dbName, orderBy: 'fid');
+    final jsons = await db.query(tableName, orderBy: 'fid');
     final datas = jsons.map((e) => lessonData.fromJson(e)).toList();
     return datas.isEmpty ? [] : datas;
   }
@@ -63,7 +63,7 @@ class lessonRepo extends baseRepository<lessonData> {
   @override
   Future<bool> insert(lessonData data) async {
     int id = await db.insert(
-      dbName,
+      tableName,
       data.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -72,8 +72,10 @@ class lessonRepo extends baseRepository<lessonData> {
 
   Future<List<teacherLesson>> fetchTeacherLessonList() async {
     final List<Map<String, dynamic>> queryResults = await db.rawQuery('''
+      select
       ac.fid as teacherId,
       ac.name,
+      ac.InternetPhoto,
       ac.identity,
       ls.fid,
       ls.teacherId,
@@ -81,31 +83,33 @@ class lessonRepo extends baseRepository<lessonData> {
       ls.weekNumber,
       ls.startTime,
       ls.endTime,
-      ls.lessonContent,
-      FROM $dbName as ls
+      ls.lessonContent
+      FROM $tableName as ls
       LEFT JOIN accounts ac on ls.teacherId = ac.fid
       ''');
     final Map<int, teacherLesson> teacherMap = {};
     for (final row in queryResults) {
       final int teacherId = row['teacherId'];
       final String name = row['name'];
-      final identityEnum identity = identityEnum.values.firstWhere((e) => e.toString().split('.').last == row['identity']);
+      final String photo = row['InternetPhoto'];
+      final identityEnum identity = identityEnum.values.firstWhere((e) => e.name == row['identity']);
 
       if (!teacherMap.containsKey(teacherId)) {
         teacherMap[teacherId] = teacherLesson(
           teacherId: teacherId,
           name: name,
+          InternetPhoto: photo,
           identity: identity,
           lessons: [],
         );
       }
 
       if (row['fid'] != null) {
-        final lesson = lessonData(
+        lessonData lesson = lessonData(
           fid: row['fid'],
           teacherId: teacherId,
           lessonName: row['lessonName'],
-          weekNumber: row['weekNumber'],
+          weekNumber: weekNumEnum.values.firstWhere((element) => element.name == row['weekNumber']),
           startTime: DateTime.parse(row['startTime'] as String),
           endTime: DateTime.parse(row['endTime'] as String),
           lessonContent: row['lessonContent'],

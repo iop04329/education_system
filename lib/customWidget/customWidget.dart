@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:education_system/account/domain/account.dart';
 import 'package:education_system/lesson/domain/lesson.dart';
+import 'package:education_system/lesson/domain/teacherLesson.dart';
 import 'package:education_system/utils/pub.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -457,7 +458,8 @@ class accountCard extends StatelessWidget {
 }
 
 class teacherInfoCard extends StatelessWidget {
-  const teacherInfoCard({super.key});
+  final teacherLesson data;
+  const teacherInfoCard({required this.data, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -485,8 +487,7 @@ class teacherInfoCard extends StatelessWidget {
         child: customExpansionTile(
           shape: Border(),
           leading: accountPhotoView(
-            networkPhoto:
-                'https://media.vogue.com.tw/photos/60c3838057ed9dbd8e18e05e/1:1/w_899,h_899,c_limit/%E6%88%AA%E5%9C%96%202021-06-11%20%E4%B8%8B%E5%8D%8811.38.15.png',
+            networkPhoto: data.InternetPhoto,
           ),
           tilePadding: const EdgeInsets.only(right: 0),
           title: Column(
@@ -506,12 +507,12 @@ class teacherInfoCard extends StatelessWidget {
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               physics: AlwaysScrollableScrollPhysics(),
-                              child: Text('Demonstrator', style: TextStyle(color: Colors.black, fontSize: 13.sp, fontWeight: FontWeight.w500)),
+                              child: Text(data.identity.name, style: TextStyle(color: Colors.black, fontSize: 13.sp, fontWeight: FontWeight.w500)),
                             ),
                           ],
                         ),
                         Text(
-                          'Albor Flores',
+                          data.name,
                           style: TextStyle(color: Colors.grey, fontSize: 16.sp),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -526,33 +527,34 @@ class teacherInfoCard extends StatelessWidget {
           children: [
             Divider(indent: 20, endIndent: 20),
             SizedBox(height: 15),
-            lessonTileCard(
-              data: lessonData(
-                teacherId: 1,
-                lessonName: '基礎程式設計',
-                weekNumber: weekNumEnum.Mon,
-                startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
-                endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
-              ),
-            ),
-            lessonTileCard(
-              data: lessonData(
-                teacherId: 1,
-                lessonName: '人工智慧總整與實作',
-                weekNumber: weekNumEnum.Thu,
-                startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 14, 0, 0),
-                endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0, 0),
-              ),
-            ),
-            lessonTileCard(
-              data: lessonData(
-                teacherId: 1,
-                lessonName: '訊號與系統',
-                weekNumber: weekNumEnum.Fri,
-                startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
-                endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
-              ),
-            ),
+            ...List.generate(data.lessons.length, (index) => lessonTileCard(data: data.lessons[index])),
+            // lessonTileCard(
+            //   data: lessonData(
+            //     teacherId: 1,
+            //     lessonName: '基礎程式設計',
+            //     weekNumber: weekNumEnum.Mon,
+            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
+            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
+            //   ),
+            // ),
+            // lessonTileCard(
+            //   data: lessonData(
+            //     teacherId: 1,
+            //     lessonName: '人工智慧總整與實作',
+            //     weekNumber: weekNumEnum.Thu,
+            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 14, 0, 0),
+            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0, 0),
+            //   ),
+            // ),
+            // lessonTileCard(
+            //   data: lessonData(
+            //     teacherId: 1,
+            //     lessonName: '訊號與系統',
+            //     weekNumber: weekNumEnum.Fri,
+            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
+            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
+            //   ),
+            // ),
           ],
         ),
       ),

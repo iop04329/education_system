@@ -59,11 +59,6 @@ class _registerPageState extends ConsumerState<registerPage> {
         Pub_Function.msgShow('註冊失敗');
     }
 
-    _getDatas() async {
-      final accounts = await accountProvider.getDatas();
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => accountInfoPage(data: accounts[2])));
-    }
-
     return Scaffold(
       appBar: customAppBar(title: '註冊'),
       body: Container(
@@ -116,7 +111,6 @@ class _registerPageState extends ConsumerState<registerPage> {
               customEditField(ctr: mailCtr, width: 0.5.sw, trailingIconOnTap: mailCtr.clear),
               SizedBox(height: 20),
               customBtn(text: '註冊', onPressed: _checkVal),
-              customBtn(text: '資訊', onPressed: _getDatas),
             ],
           ),
         ),

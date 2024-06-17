@@ -1,5 +1,6 @@
 import 'package:education_system/lesson/data/lessonRepository.dart';
 import 'package:education_system/lesson/domain/lesson.dart';
+import 'package:education_system/lesson/domain/teacherLesson.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final lessonCtrProvider = Provider.autoDispose<lessonController>((ref) {
@@ -16,8 +17,8 @@ class lessonController {
   lessonController(this._lessonRepo, this._ref);
 
   Future<List<lessonData>> fetchs() async {
-    final accounts = await _lessonRepo.fetchList();
-    return accounts;
+    final lessons = await _lessonRepo.fetchList();
+    return lessons;
   }
 
   Future<bool> insert(lessonData data) async {
@@ -30,5 +31,9 @@ class lessonController {
 
   Future<bool> delete(int id) async {
     return await _lessonRepo.delete(id);
+  }
+
+  Future<List<teacherLesson>> fetchTeacherLessons() async {
+    return await _lessonRepo.fetchTeacherLessonList();
   }
 }

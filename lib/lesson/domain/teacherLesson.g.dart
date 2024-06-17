@@ -10,6 +10,7 @@ _$teacherLessonImpl _$$teacherLessonImplFromJson(Map<String, dynamic> json) =>
     _$teacherLessonImpl(
       teacherId: (json['teacherId'] as num).toInt(),
       name: json['name'] as String,
+      InternetPhoto: json['InternetPhoto'] as String? ?? '',
       identity: $enumDecode(_$identityEnumEnumMap, json['identity']),
       lessons: (json['lessons'] as List<dynamic>)
           .map((e) => lessonData.fromJson(e as Map<String, dynamic>))
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$teacherLessonImplToJson(_$teacherLessonImpl instance) =>
     <String, dynamic>{
       'teacherId': instance.teacherId,
       'name': instance.name,
+      'InternetPhoto': instance.InternetPhoto,
       'identity': _$identityEnumEnumMap[instance.identity]!,
       'lessons': instance.lessons,
     };

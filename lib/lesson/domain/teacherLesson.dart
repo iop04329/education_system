@@ -5,11 +5,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'teacherLesson.freezed.dart';
 part 'teacherLesson.g.dart';
 
-@freezed
+@unfreezed
 class teacherLesson with _$teacherLesson {
   factory teacherLesson({
     required int teacherId,
     required String name,
+    @Default('') String? InternetPhoto,
     required identityEnum identity,
     required List<lessonData> lessons,
   }) = _teacherLesson;

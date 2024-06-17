@@ -21,9 +21,15 @@ teacherLesson _$teacherLessonFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$teacherLesson {
   int get teacherId => throw _privateConstructorUsedError;
+  set teacherId(int value) => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  set name(String value) => throw _privateConstructorUsedError;
+  String? get InternetPhoto => throw _privateConstructorUsedError;
+  set InternetPhoto(String? value) => throw _privateConstructorUsedError;
   identityEnum get identity => throw _privateConstructorUsedError;
+  set identity(identityEnum value) => throw _privateConstructorUsedError;
   List<lessonData> get lessons => throw _privateConstructorUsedError;
+  set lessons(List<lessonData> value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,6 +46,7 @@ abstract class $teacherLessonCopyWith<$Res> {
   $Res call(
       {int teacherId,
       String name,
+      String? InternetPhoto,
       identityEnum identity,
       List<lessonData> lessons});
 }
@@ -59,6 +66,7 @@ class _$teacherLessonCopyWithImpl<$Res, $Val extends teacherLesson>
   $Res call({
     Object? teacherId = null,
     Object? name = null,
+    Object? InternetPhoto = freezed,
     Object? identity = null,
     Object? lessons = null,
   }) {
@@ -71,6 +79,10 @@ class _$teacherLessonCopyWithImpl<$Res, $Val extends teacherLesson>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      InternetPhoto: freezed == InternetPhoto
+          ? _value.InternetPhoto
+          : InternetPhoto // ignore: cast_nullable_to_non_nullable
+              as String?,
       identity: null == identity
           ? _value.identity
           : identity // ignore: cast_nullable_to_non_nullable
@@ -94,6 +106,7 @@ abstract class _$$teacherLessonImplCopyWith<$Res>
   $Res call(
       {int teacherId,
       String name,
+      String? InternetPhoto,
       identityEnum identity,
       List<lessonData> lessons});
 }
@@ -111,6 +124,7 @@ class __$$teacherLessonImplCopyWithImpl<$Res>
   $Res call({
     Object? teacherId = null,
     Object? name = null,
+    Object? InternetPhoto = freezed,
     Object? identity = null,
     Object? lessons = null,
   }) {
@@ -123,12 +137,16 @@ class __$$teacherLessonImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      InternetPhoto: freezed == InternetPhoto
+          ? _value.InternetPhoto
+          : InternetPhoto // ignore: cast_nullable_to_non_nullable
+              as String?,
       identity: null == identity
           ? _value.identity
           : identity // ignore: cast_nullable_to_non_nullable
               as identityEnum,
       lessons: null == lessons
-          ? _value._lessons
+          ? _value.lessons
           : lessons // ignore: cast_nullable_to_non_nullable
               as List<lessonData>,
     ));
@@ -141,49 +159,29 @@ class _$teacherLessonImpl implements _teacherLesson {
   _$teacherLessonImpl(
       {required this.teacherId,
       required this.name,
+      this.InternetPhoto = '',
       required this.identity,
-      required final List<lessonData> lessons})
-      : _lessons = lessons;
+      required this.lessons});
 
   factory _$teacherLessonImpl.fromJson(Map<String, dynamic> json) =>
       _$$teacherLessonImplFromJson(json);
 
   @override
-  final int teacherId;
+  int teacherId;
   @override
-  final String name;
+  String name;
   @override
-  final identityEnum identity;
-  final List<lessonData> _lessons;
+  @JsonKey()
+  String? InternetPhoto;
   @override
-  List<lessonData> get lessons {
-    if (_lessons is EqualUnmodifiableListView) return _lessons;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_lessons);
-  }
+  identityEnum identity;
+  @override
+  List<lessonData> lessons;
 
   @override
   String toString() {
-    return 'teacherLesson(teacherId: $teacherId, name: $name, identity: $identity, lessons: $lessons)';
+    return 'teacherLesson(teacherId: $teacherId, name: $name, InternetPhoto: $InternetPhoto, identity: $identity, lessons: $lessons)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$teacherLessonImpl &&
-            (identical(other.teacherId, teacherId) ||
-                other.teacherId == teacherId) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.identity, identity) ||
-                other.identity == identity) &&
-            const DeepCollectionEquality().equals(other._lessons, _lessons));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, teacherId, name, identity,
-      const DeepCollectionEquality().hash(_lessons));
 
   @JsonKey(ignore: true)
   @override
@@ -201,22 +199,30 @@ class _$teacherLessonImpl implements _teacherLesson {
 
 abstract class _teacherLesson implements teacherLesson {
   factory _teacherLesson(
-      {required final int teacherId,
-      required final String name,
-      required final identityEnum identity,
-      required final List<lessonData> lessons}) = _$teacherLessonImpl;
+      {required int teacherId,
+      required String name,
+      String? InternetPhoto,
+      required identityEnum identity,
+      required List<lessonData> lessons}) = _$teacherLessonImpl;
 
   factory _teacherLesson.fromJson(Map<String, dynamic> json) =
       _$teacherLessonImpl.fromJson;
 
   @override
   int get teacherId;
+  set teacherId(int value);
   @override
   String get name;
+  set name(String value);
+  @override
+  String? get InternetPhoto;
+  set InternetPhoto(String? value);
   @override
   identityEnum get identity;
+  set identity(identityEnum value);
   @override
   List<lessonData> get lessons;
+  set lessons(List<lessonData> value);
   @override
   @JsonKey(ignore: true)
   _$$teacherLessonImplCopyWith<_$teacherLessonImpl> get copyWith =>

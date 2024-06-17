@@ -20,10 +20,9 @@ abstract class baseRepository<T> {
 
 class accountRepo extends baseRepository<accountData> {
   late Database db;
-  static String dbName = 'accounts';
-  static String get accountPath => 'dbaccount.db';
+  static String tableName = 'accounts';
   static String get accountCreateSql => """
-      create table $dbName(
+      create table $tableName(
         fid integer primary key autoincrement not null,
         InternetPhoto Text not null default '',
         name Text not null default '',
@@ -38,13 +37,13 @@ class accountRepo extends baseRepository<accountData> {
     initRepo();
   }
   initRepo() async {
-    db = await sqlTool.db(accountCreateSql, accountPath);
+    db = await sqlTool.open(sqlTool.dbName);
   }
 
   @override
   insert(accountData data) async {
     int id = await db.insert(
-      dbName,
+      tableName,
       data.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -53,35 +52,35 @@ class accountRepo extends baseRepository<accountData> {
 
   @override
   Future<accountData?> fetch(int fid) async {
-    final jsons = await db.query(dbName, where: 'fid = ?', whereArgs: [fid]);
+    final jsons = await db.query(tableName, where: 'fid = ?', whereArgs: [fid]);
     final datas = jsons.map((e) => accountData.fromJson(e)).toList();
     return datas.isEmpty ? null : datas.first;
   }
 
   @override
   Future<accountData?> login({String? account, String? password}) async {
-    final jsons = await db.query(dbName, where: 'account = ? and password = ?', whereArgs: [account, password]);
+    final jsons = await db.query(tableName, where: 'account = ? and password = ?', whereArgs: [account, password]);
     final datas = jsons.map((e) => accountData.fromJson(e)).toList();
     return datas.isEmpty ? null : datas.first;
   }
 
   @override
   Future<List<accountData>> fetchList() async {
-    final jsons = await db.query(dbName, orderBy: 'fid');
+    final jsons = await db.query(tableName, orderBy: 'fid');
     final datas = jsons.map((e) => accountData.fromJson(e)).toList();
     return datas.isEmpty ? [] : datas;
   }
 
   @override
   edit(accountData data) async {
-    int res = await db.update(dbName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
+    int res = await db.update(tableName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);
 
     return res == 0 ? false : true;
   }
 
   @override
   delete(int id) async {
-    int res = await db.delete(dbName, where: 'fid = ?', whereArgs: [id]);
+    int res = await db.delete(tableName, where: 'fid = ?', whereArgs: [id]);
     return res == 0 ? false : true;
   }
 }
