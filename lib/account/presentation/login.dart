@@ -1,26 +1,45 @@
+import 'package:education_system/account/controller/accountController.dart';
+import 'package:education_system/account/domain/account.dart';
 import 'package:education_system/account/presentation/list.dart';
 import 'package:education_system/account/presentation/register.dart';
 import 'package:education_system/appbar/customAppBar.dart';
 import 'package:education_system/customWidget/customWidget.dart';
-import 'package:education_system/lesson/presentation/lesson.dart';
+import 'package:education_system/lesson/presentation/lessons.dart';
+import 'package:education_system/lesson/presentation/Info.dart';
+import 'package:education_system/lesson/presentation/teacherLessons.dart';
+import 'package:education_system/utils/pub.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class loginPage extends StatefulWidget {
-  const loginPage({super.key, required this.title});
-
+class loginPage extends StatefulHookConsumerWidget {
   final String title;
+  const loginPage({required this.title, super.key});
 
   @override
-  State<loginPage> createState() => _loginPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _loginPageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _loginPageState extends ConsumerState<loginPage> {
   TextEditingController accountCtr = TextEditingController();
   TextEditingController pswdCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _login() async {
+      final accountCtrPro = ref.read(accountCtrProvider);
+      final account = await accountCtrPro.login(accountCtr.text, pswdCtr.text);
+      if (account == null) {
+        Pub_Function.msgShow('登入失敗');
+        return;
+      }
+      if (account!.identity == identityEnum.teacher)
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => teacherLessonsPage(data: account)));
+      else
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AllLessonsPage()));
+    }
+
     return Scaffold(
       appBar: customAppBar(title: '教育課程系統', back: false),
       body: Container(
@@ -32,15 +51,15 @@ class _loginPageState extends State<loginPage> {
             SizedBox(height: 0.03.sh),
             titleTxt('帳號'),
             SizedBox(height: 10),
-            customEditField(ctr: accountCtr, width: 0.5.sw, onTap: accountCtr.clear),
+            customEditField(ctr: accountCtr, width: 0.5.sw, trailingIconOnTap: accountCtr.clear),
             SizedBox(height: 20),
             titleTxt('密碼'),
             SizedBox(height: 10),
-            customEditField(ctr: pswdCtr, width: 0.5.sw, onTap: pswdCtr.clear),
+            customEditField(ctr: pswdCtr, width: 0.5.sw, trailingIconOnTap: pswdCtr.clear),
             SizedBox(height: 10),
             customBtn(
               text: '登入',
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => lessonPage())),
+              onPressed: () => _login(),
             ),
             SizedBox(height: 10),
             customBtn(

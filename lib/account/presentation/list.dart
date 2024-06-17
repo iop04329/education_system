@@ -28,18 +28,28 @@ class _accountListPageState extends ConsumerState<accountListPage> with AfterLay
   @override
   void initState() {
     accountProvider = ref.read(accountCtrProvider);
-    getData();
+    _getData();
   }
 
-  getData() async {
+  _getData() async {
     accounts = await accountProvider.getDatas();
     isInitializing = false;
     setState(() {});
   }
 
-  _onDelete(int ind) async {
-    await accountProvider.delete(ind);
-    await getData();
+  _getInfo(accountData item) async => await Navigator.of(context)
+      .push(
+        MaterialPageRoute(
+          builder: (_) => accountInfoPage(
+            data: item,
+          ),
+        ),
+      )
+      .then((value) async => await _getData());
+
+  _onDelete(int fid) async {
+    await accountProvider.delete(fid);
+    await _getData();
   }
 
   @override
@@ -49,29 +59,21 @@ class _accountListPageState extends ConsumerState<accountListPage> with AfterLay
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: isInitializing
-                ? [Center(child: CircularProgressIndicator())]
-                : List.generate(
+        child: isInitializing
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: List.generate(
                     accounts.length,
                     (index) => accountCard(
                       account: accounts[index],
-                      onTap: () async => await Navigator.of(context)
-                          .push(
-                            MaterialPageRoute(
-                              builder: (_) => accountInfoPage(
-                                data: accounts[index],
-                              ),
-                            ),
-                          )
-                          .then((value) async => await getData()),
+                      onTap: () => _getInfo(accounts[index]),
                       onDelete: () => _onDelete(accounts[index].fid!),
                     ),
                   ),
-          ),
-        ),
+                ),
+              ),
       ),
     );
   }

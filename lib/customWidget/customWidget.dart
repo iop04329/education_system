@@ -149,15 +149,17 @@ class customEditField extends StatelessWidget {
   final double height;
   final TextEditingController? ctr;
   final bool enable;
-  final void Function()? onTap;
+  final void Function()? trailingIconOnTap;
   final TextInputType? keyboardType;
+  final IconData? trailingIcon;
   const customEditField({
     this.width,
     this.height = 35,
     this.ctr,
     this.enable = true,
-    this.onTap,
+    this.trailingIconOnTap,
     this.keyboardType,
+    this.trailingIcon = Icons.close,
     super.key,
   });
 
@@ -197,8 +199,8 @@ class customEditField extends StatelessWidget {
                       Align(
                           alignment: Alignment.center,
                           child: GestureDetector(
-                            onTap: onTap,
-                            child: Icon(Icons.close, color: Colors.grey, size: 16.sp),
+                            onTap: trailingIconOnTap,
+                            child: Icon(trailingIcon, color: Colors.grey, size: 16.sp),
                           )),
                     ],
                   ),
@@ -340,6 +342,63 @@ class accountPhotoView extends StatelessWidget {
   }
 }
 
+class lessonCard extends StatelessWidget {
+  final lessonData lesson;
+  final void Function()? onTap;
+  final void Function()? onDelete;
+  const lessonCard({required this.lesson, this.onTap, this.onDelete, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        // height: 80,
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 0.8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('課程名稱:${lesson.lessonName}', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.w500)),
+                Text(
+                  '課程內容:${lesson.lessonContent}',
+                  style: TextStyle(color: Colors.grey, fontSize: 13.sp),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  '上課時間:${Pub_Function.dateTimeToHHmm(lesson.startTime)} ~ ${Pub_Function.dateTimeToHHmm(lesson.endTime)}',
+                  style: TextStyle(color: Colors.grey, fontSize: 13.sp),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            Spacer(),
+            customBtn(text: '刪除', onPressed: onDelete)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class accountCard extends StatelessWidget {
   final accountData account;
   final void Function()? onTap;
@@ -467,7 +526,7 @@ class teacherInfoCard extends StatelessWidget {
           children: [
             Divider(indent: 20, endIndent: 20),
             SizedBox(height: 15),
-            lessonCard(
+            lessonTileCard(
               data: lessonData(
                 teacherId: 1,
                 lessonName: '基礎程式設計',
@@ -476,7 +535,7 @@ class teacherInfoCard extends StatelessWidget {
                 endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
               ),
             ),
-            lessonCard(
+            lessonTileCard(
               data: lessonData(
                 teacherId: 1,
                 lessonName: '人工智慧總整與實作',
@@ -485,7 +544,7 @@ class teacherInfoCard extends StatelessWidget {
                 endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0, 0),
               ),
             ),
-            lessonCard(
+            lessonTileCard(
               data: lessonData(
                 teacherId: 1,
                 lessonName: '訊號與系統',
@@ -545,9 +604,9 @@ class _customExpansionTileState extends State<customExpansionTile> {
   }
 }
 
-class lessonCard extends StatelessWidget {
+class lessonTileCard extends StatelessWidget {
   final lessonData data;
-  const lessonCard({required this.data, super.key});
+  const lessonTileCard({required this.data, super.key});
 
   @override
   Widget build(BuildContext context) {

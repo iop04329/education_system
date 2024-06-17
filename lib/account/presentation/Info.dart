@@ -44,7 +44,7 @@ class _accountInfoPage2State extends ConsumerState<accountInfoPage> {
       isEdit.value = !isEdit.value;
     }
 
-    _checkVal() async {
+    _complete() async {
       if (photoCtr.text == '' ||
           nameCtr.text == '' ||
           accountCtr.text == '' ||
@@ -86,19 +86,19 @@ class _accountInfoPage2State extends ConsumerState<accountInfoPage> {
                     SizedBox(height: 0.03.sh),
                     titleTxt('照片(用網路網址當範例)'),
                     SizedBox(height: 10),
-                    customEditField(ctr: photoCtr, width: 0.5.sw, onTap: photoCtr.clear),
+                    customEditField(ctr: photoCtr, width: 0.5.sw, trailingIconOnTap: photoCtr.clear),
                     SizedBox(height: 20),
                     titleTxt('名稱'),
                     SizedBox(height: 10),
-                    customEditField(ctr: nameCtr, width: 0.5.sw, onTap: nameCtr.clear),
+                    customEditField(ctr: nameCtr, width: 0.5.sw, trailingIconOnTap: nameCtr.clear),
                     SizedBox(height: 20),
                     titleTxt('帳號'),
                     SizedBox(height: 10),
-                    customEditField(ctr: accountCtr, width: 0.5.sw, onTap: accountCtr.clear),
+                    customEditField(ctr: accountCtr, width: 0.5.sw, trailingIconOnTap: accountCtr.clear),
                     SizedBox(height: 20),
                     titleTxt('密碼'),
                     SizedBox(height: 10),
-                    customEditField(ctr: passwordCtr, width: 0.5.sw, onTap: passwordCtr.clear),
+                    customEditField(ctr: passwordCtr, width: 0.5.sw, trailingIconOnTap: passwordCtr.clear),
                     SizedBox(height: 20),
                     titleTxt('身份'),
                     SizedBox(height: 10),
@@ -123,9 +123,9 @@ class _accountInfoPage2State extends ConsumerState<accountInfoPage> {
                     SizedBox(height: 20),
                     titleTxt('email'),
                     SizedBox(height: 10),
-                    customEditField(ctr: mailCtr, width: 0.5.sw, onTap: mailCtr.clear),
+                    customEditField(ctr: mailCtr, width: 0.5.sw, trailingIconOnTap: mailCtr.clear),
                     SizedBox(height: 20),
-                    customBtn(text: '修改', onPressed: _checkVal),
+                    customBtn(text: '完成', onPressed: _complete),
                   ]
                 : [
                     SizedBox(height: 0.03.sh),

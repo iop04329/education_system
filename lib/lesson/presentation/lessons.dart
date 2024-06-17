@@ -1,3 +1,4 @@
+import 'package:education_system/account/domain/account.dart';
 import 'package:education_system/appbar/customAppBar.dart';
 import 'package:education_system/customWidget/customWidget.dart';
 import 'package:education_system/lesson/domain/lesson.dart';
@@ -8,18 +9,18 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class lessonPage extends StatefulHookConsumerWidget {
-  const lessonPage({super.key});
+class AllLessonsPage extends StatefulHookConsumerWidget {
+  const AllLessonsPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _lessonPageState();
 }
 
-class _lessonPageState extends ConsumerState<lessonPage> {
+class _lessonPageState extends ConsumerState<AllLessonsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: '課程總覽'),
+      appBar: customAppBar(title: '學生課程總覽'),
       body: Container(
         height: double.infinity,
         color: Colors.white,

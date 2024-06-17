@@ -17,11 +17,9 @@ class accountController {
     return accounts;
   }
 
-  Future<bool> login(String account, String password) async {
-    final accounts = await _accountRepo.fetchList();
-    int ind = accounts.indexWhere((element) => element.account == account && element.password == password);
-
-    return ind == -1 ? false : true;
+  Future<accountData?> login(String account, String password) async {
+    final accounts = await _accountRepo.login(account: account, password: password);
+    return accounts;
   }
 
   Future<bool> register(accountData data) async {

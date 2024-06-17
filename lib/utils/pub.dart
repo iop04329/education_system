@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class Pub_Function {
   static String formatDate(String inputDate) {
@@ -38,5 +39,18 @@ class Pub_Function {
       timeInSecForIosWeb: 1,
       fontSize: 16,
     );
+  }
+
+  static DateTime timeOfDayToDateTime(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  }
+
+  static TimeOfDay DTToTimeOfDay(DateTime dt) {
+    return TimeOfDay(hour: dt.hour, minute: dt.minute);
+  }
+
+  static String dateTimeToHHmm(DateTime time) {
+    return DateFormat.Hm().format(time);
   }
 }

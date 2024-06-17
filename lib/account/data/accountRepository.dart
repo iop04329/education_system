@@ -59,6 +59,13 @@ class accountRepo extends baseRepository<accountData> {
   }
 
   @override
+  Future<accountData?> login({String? account, String? password}) async {
+    final jsons = await db.query(dbName, where: 'account = ? and password = ?', whereArgs: [account, password]);
+    final datas = jsons.map((e) => accountData.fromJson(e)).toList();
+    return datas.isEmpty ? null : datas.first;
+  }
+
+  @override
   Future<List<accountData>> fetchList() async {
     final jsons = await db.query(dbName, orderBy: 'fid');
     final datas = jsons.map((e) => accountData.fromJson(e)).toList();

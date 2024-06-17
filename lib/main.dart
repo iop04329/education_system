@@ -1,5 +1,6 @@
 import 'package:education_system/account/data/accountRepository.dart';
 import 'package:education_system/account/presentation/login.dart';
+import 'package:education_system/lesson/data/lessonRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,6 +45,7 @@ class MyApp2 extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     ref.read(accountRepoProvider);
+    ref.read(lessonRepoProvider);
     print('${size.width} , ${size.height}');
     return ScreenUtilInit(
       designSize: const Size(360, 690),

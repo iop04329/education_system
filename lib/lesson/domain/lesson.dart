@@ -38,3 +38,26 @@ class lessonData with _$lessonData {
 
   factory lessonData.fromJson(Map<String, dynamic> json) => _$lessonDataFromJson(json);
 }
+
+class lessonFn {
+  static weekNumEnum getWeekEnum(int index) {
+    switch (index) {
+      case 0:
+        return weekNumEnum.Mon;
+      case 1:
+        return weekNumEnum.Tue;
+      case 2:
+        return weekNumEnum.Wed;
+      case 3:
+        return weekNumEnum.Thu;
+      case 4:
+        return weekNumEnum.Fri;
+      case 5:
+        return weekNumEnum.Sat;
+      case 6:
+        return weekNumEnum.Sun;
+      case _:
+        return weekNumEnum.Mon;
+    }
+  }
+}

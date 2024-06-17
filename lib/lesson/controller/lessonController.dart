@@ -15,7 +15,7 @@ class lessonController {
   final Ref _ref;
   lessonController(this._lessonRepo, this._ref);
 
-  Future<List<lessonData>> getDatas() async {
+  Future<List<lessonData>> fetchs() async {
     final accounts = await _lessonRepo.fetchList();
     return accounts;
   }
