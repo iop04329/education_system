@@ -529,33 +529,6 @@ class teacherInfoCard extends StatelessWidget {
             Divider(indent: 20, endIndent: 20),
             SizedBox(height: 15),
             ...List.generate(data.lessons.length, (index) => lessonTileCard(data: data.lessons[index])),
-            // lessonTileCard(
-            //   data: lessonData(
-            //     teacherId: 1,
-            //     lessonName: '基礎程式設計',
-            //     weekNumber: weekNumEnum.Mon,
-            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
-            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
-            //   ),
-            // ),
-            // lessonTileCard(
-            //   data: lessonData(
-            //     teacherId: 1,
-            //     lessonName: '人工智慧總整與實作',
-            //     weekNumber: weekNumEnum.Thu,
-            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 14, 0, 0),
-            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0, 0),
-            //   ),
-            // ),
-            // lessonTileCard(
-            //   data: lessonData(
-            //     teacherId: 1,
-            //     lessonName: '訊號與系統',
-            //     weekNumber: weekNumEnum.Fri,
-            //     startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0, 0),
-            //     endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0),
-            //   ),
-            // ),
           ],
         ),
       ),
