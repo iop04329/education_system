@@ -21,6 +21,21 @@ class lessonController {
     return lessons;
   }
 
+  Future<List<lessonData>> fectchTeacherLessons(int teacherId) async {
+    final lessons = await _lessonRepo.fetchTeacheLessons(teacherId);
+    return lessons;
+  }
+
+  Future<List<lessonData>> fectchStudentLessons(int studentId) async {
+    final lessons = await _lessonRepo.fetchStudentLessons(studentId);
+    return lessons;
+  }
+
+  Future<List<lessonData>> fectchStudentCanAdd(int studentId) async {
+    final lessons = await _lessonRepo.fetchStudentCanAdd(studentId);
+    return lessons;
+  }
+
   Future<bool> insert(lessonData data) async {
     return await _lessonRepo.insert(data);
   }
@@ -33,7 +48,7 @@ class lessonController {
     return await _lessonRepo.delete(id);
   }
 
-  Future<List<teacherLesson>> fetchTeacherLessons() async {
-    return await _lessonRepo.fetchTeacherLessonList();
+  Future<List<teacherLesson>> fetchTeacherAllLessons() async {
+    return await _lessonRepo.fetchTeacherAllLessons();
   }
 }

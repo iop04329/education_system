@@ -27,7 +27,7 @@ class _lessonPageState extends ConsumerState<AllLessonsPage> {
   }
 
   _getData() async {
-    items = await ref.read(lessonCtrProvider).fetchTeacherLessons();
+    items = await ref.read(lessonCtrProvider).fetchTeacherAllLessons();
     isInitializing = false;
     setState(() {});
   }
@@ -35,7 +35,7 @@ class _lessonPageState extends ConsumerState<AllLessonsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: '學生課程總覽'),
+      appBar: customAppBar(title: '課程總覽'),
       body: Container(
         height: double.infinity,
         color: Colors.white,

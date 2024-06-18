@@ -1,5 +1,6 @@
 import 'package:education_system/account/data/accountRepository.dart';
 import 'package:education_system/account/domain/account.dart';
+import 'package:education_system/lesson/data/studentLessonRepository.dart';
 import 'package:education_system/lesson/domain/lesson.dart';
 import 'package:education_system/lesson/domain/teacherLesson.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +61,48 @@ class lessonRepo extends baseRepository<lessonData> {
     return datas.isEmpty ? [] : datas;
   }
 
+  Future<List<lessonData>> fetchTeacheLessons(int teacherId) async {
+    final jsons = await db.query(tableName, where: 'teacherId = ?', whereArgs: [teacherId], orderBy: 'fid');
+    final datas = jsons.map((e) => lessonData.fromJson(e)).toList();
+    return datas.isEmpty ? [] : datas;
+  }
+
+  Future<List<lessonData>> fetchStudentLessons(int studentId) async {
+    String strsql = """
+      select ls.* 
+      from ${studentLessonRepo.tableName} as sl
+      left join ${tableName} as ls on sl.lessonId = ls.fid
+      where studentId = ${studentId}
+      order by ls.fid
+    """;
+    final jsons = await db.rawQuery(strsql);
+    final datas = jsons.map((e) => lessonData.fromJson(e)).toList();
+    return datas.isEmpty ? [] : datas;
+  }
+
+  Future<List<lessonData>> fetchStudentCanAdd(int studentId) async {
+    // String strsql = """
+    //   select ls.*
+    //   from ${studentLessonRepo.tableName} as sl
+    //   left join ${tableName} as ls on sl.lessonId = ls.fid
+    //   where studentId <> ${studentId}
+    //   order by ls.fid
+    // """;
+    String strsql = """
+    SELECT ls.* 
+      FROM ${tableName} AS ls
+      WHERE ls.fid NOT IN (
+          SELECT sl.lessonId
+          FROM ${studentLessonRepo.tableName} AS sl
+          WHERE sl.studentId = ${studentId}
+      )
+      ORDER BY ls.fid
+    """;
+    final jsons = await db.rawQuery(strsql);
+    final datas = jsons.map((e) => lessonData.fromJson(e)).toList();
+    return datas.isEmpty ? [] : datas;
+  }
+
   @override
   Future<bool> insert(lessonData data) async {
     int id = await db.insert(
@@ -70,7 +113,7 @@ class lessonRepo extends baseRepository<lessonData> {
     return id == 0 ? false : true;
   }
 
-  Future<List<teacherLesson>> fetchTeacherLessonList() async {
+  Future<List<teacherLesson>> fetchTeacherAllLessons() async {
     final List<Map<String, dynamic>> queryResults = await db.rawQuery('''
       select
       ac.fid as teacherId,

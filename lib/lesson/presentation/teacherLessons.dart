@@ -26,7 +26,7 @@ class _lessonListPageState extends ConsumerState<teacherLessonsPage> {
 
   _getData() async {
     final lsCtrPro = ref.read(lessonCtrProvider);
-    items = await lsCtrPro.fetchs();
+    items = await lsCtrPro.fectchTeacherLessons(widget.data.fid!);
     isInitializing = false;
     setState(() {});
   }
@@ -64,7 +64,7 @@ class _lessonListPageState extends ConsumerState<teacherLessonsPage> {
                       (index) => lessonCard(
                             lesson: items[index],
                             onTap: () => _getInfo(items[index]),
-                            onDelete: () => _onDelete(items[index].fid!),
+                            onBtnTap: () => _onDelete(items[index].fid!),
                           )),
                 ),
               ),

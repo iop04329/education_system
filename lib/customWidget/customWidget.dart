@@ -346,8 +346,9 @@ class accountPhotoView extends StatelessWidget {
 class lessonCard extends StatelessWidget {
   final lessonData lesson;
   final void Function()? onTap;
-  final void Function()? onDelete;
-  const lessonCard({required this.lesson, this.onTap, this.onDelete, super.key});
+  final String btnTxt;
+  final void Function()? onBtnTap;
+  const lessonCard({required this.lesson, this.onTap, this.btnTxt = '刪除', this.onBtnTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +393,7 @@ class lessonCard extends StatelessWidget {
               ],
             ),
             Spacer(),
-            customBtn(text: '刪除', onPressed: onDelete)
+            onBtnTap == null ? SizedBox() : customBtn(text: btnTxt, onPressed: onBtnTap)
           ],
         ),
       ),
@@ -640,5 +641,15 @@ class lessonTileCard extends StatelessWidget {
         SizedBox(width: 5),
       ]),
     );
+  }
+}
+
+class noDataWidget extends StatelessWidget {
+  final String text;
+  const noDataWidget({this.text = '無資料', super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text(text, style: TextStyle(color: Colors.grey, fontSize: 15.sp)));
   }
 }

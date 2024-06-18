@@ -4,8 +4,10 @@ import 'package:education_system/account/presentation/list.dart';
 import 'package:education_system/account/presentation/register.dart';
 import 'package:education_system/appbar/customAppBar.dart';
 import 'package:education_system/customWidget/customWidget.dart';
-import 'package:education_system/lesson/presentation/lessons.dart';
+import 'package:education_system/lesson/domain/studentLesson.dart';
+import 'package:education_system/lesson/presentation/allLessons.dart';
 import 'package:education_system/lesson/presentation/Info.dart';
+import 'package:education_system/lesson/presentation/studentLessons.dart';
 import 'package:education_system/lesson/presentation/teacherLessons.dart';
 import 'package:education_system/utils/pub.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +36,10 @@ class _loginPageState extends ConsumerState<loginPage> {
         Pub_Function.msgShow('登入失敗');
         return;
       }
-      if (account!.identity == identityEnum.teacher)
+      if (account.identity == identityEnum.teacher)
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => teacherLessonsPage(data: account)));
       else
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AllLessonsPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => studentLessonsPage(data: account)));
     }
 
     return Scaffold(
@@ -70,6 +72,11 @@ class _loginPageState extends ConsumerState<loginPage> {
             customBtn(
               text: '帳號管理',
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => accountListPage())),
+            ),
+            SizedBox(height: 10),
+            customBtn(
+              text: '課程總覽',
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AllLessonsPage())),
             ),
           ],
         ),

@@ -33,6 +33,11 @@ class studentLessonRepo extends baseRepository<studentLesson> {
     return res == 0 ? false : true;
   }
 
+  Future<bool> deleteByLessonId(int lessonId) async {
+    int res = await db.delete(tableName, where: 'lessonId = ?', whereArgs: [lessonId]);
+    return res == 0 ? false : true;
+  }
+
   @override
   Future<bool> edit(studentLesson data) async {
     int res = await db.update(tableName, data.toJson(), where: 'fid = ?', whereArgs: [data.fid]);

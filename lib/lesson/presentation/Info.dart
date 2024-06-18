@@ -11,7 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class lessonInfoPage extends StatefulHookConsumerWidget {
   final lessonData data;
-  const lessonInfoPage({required this.data, super.key});
+  final bool canEdit;
+  const lessonInfoPage({required this.data, this.canEdit = true, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _lessonInfoPageState();
@@ -170,7 +171,7 @@ class _lessonInfoPageState extends ConsumerState<lessonInfoPage> {
                     ),
                     SizedBox(height: 20),
                     customBtn(text: '返回', onPressed: _goBack),
-                    customBtn(text: '編輯', onPressed: _goEdit),
+                    widget.canEdit ? customBtn(text: '編輯', onPressed: _goEdit) : SizedBox(),
                   ],
           ),
         ),
